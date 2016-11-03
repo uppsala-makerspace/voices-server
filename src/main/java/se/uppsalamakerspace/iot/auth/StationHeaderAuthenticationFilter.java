@@ -18,7 +18,6 @@ public class StationHeaderAuthenticationFilter extends RequestHeaderAuthenticati
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
         if(request.getHeader("X-Station-ID") == null) {
-            log.debug("FUCK YOU");
             return null;
         }
         return request.getHeader("X-Station-ID");
