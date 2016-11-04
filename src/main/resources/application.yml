@@ -1,5 +1,16 @@
 ---
 
+# spring.datasource.url: jdbc:h2:file:data
+
+
+spring:
+  jpa:
+    database: H2
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: 'jdbc:h2:file:./voices-server;FILE_LOCK=FS'
+
 logging.level:
   se.uppsalamakerspace.iot: DEBUG
   #org.springframework.security: DEBUG
