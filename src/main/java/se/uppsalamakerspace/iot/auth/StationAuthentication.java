@@ -40,7 +40,7 @@ public class StationAuthentication implements Authentication {
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return true;
     }
 
     @Override
