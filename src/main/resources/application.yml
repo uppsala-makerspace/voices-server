@@ -2,4 +2,4 @@
 
 logging.level:
   se.uppsalamakerspace.iot: DEBUG
-  org.springframework.security: DEBUG
+  #org.springframework.security: DEBUG

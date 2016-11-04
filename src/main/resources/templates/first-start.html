@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: mainHead('Första uppstart')"/>
+<body>
+<div th:replace="fragments/navigation :: standard"/>
+<h1>
+    Välkommen
+</h1>
+<p>Detta är första gången du startar IoT-servern. Du behöver därför skapa en ny admin-användare</p>
+<form class="form-horizontal" th:action="@{/admin/firstUser}" method="post">
+    <h2>Var vänlig att logga in</h2>
+    <div class="form-group">
+        <label class="col-sm-2" for="userName">Användarnamn</label>
+        <input class="col-sm-2" id="userName" type="text" name="username"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2" for="password">Lösenord</label>
+        <input class="col-sm-2" id="password" type="password" name="password"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2" for="password_confirm">Bekräfta lösenord</label>
+        <input class="col-sm-2" id="password_confirm" type="password" name="passwordConfirm"/>
+    </div>
+    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-login"></span> Skapa användare</button>
+</form>
+</body>
+</html>

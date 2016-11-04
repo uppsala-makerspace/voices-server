@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/head :: mainHead('Logga in')"/>
+    <body>
+        <div th:replace="fragments/navigation :: standard"/>
+        <h1>
+            Inloggning
+        </h1>
+        <form class="form-horizontal" th:action="@{/admin/login}" method="post">
+            <h2>Var vänlig att logga in</h2>
+            <div class="form-group">
+                <label class="col-sm-2" for="userName">Användarnamn</label>
+                <input class="col-sm-2" id="userName" type="text" name="username"/>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2" for="password">Lösenord</label>
+                <input class="col-sm-2" id="password" type="password" name="password"/>
+            </div>
+            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-login"></span> Logga in</button>
+        </form>
+    </body>
+</html>

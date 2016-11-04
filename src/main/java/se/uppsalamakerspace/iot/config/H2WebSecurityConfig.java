@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * Created by fredl2 on 2016-11-01.
  */
 @EnableWebSecurity
-@Order(2)
+@Order(3)
 public class H2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {

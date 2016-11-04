@@ -20,7 +20,7 @@ public class StationAuthentication implements Authentication {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("STATION"));
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_STATION"));
     }
 
     @Override

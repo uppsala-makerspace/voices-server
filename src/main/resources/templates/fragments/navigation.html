@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div id="menu-main" th:fragment="standard" class="navbar navbar-default">
+        <div class="navbar-brand">
+            <span>Voices of the City</span>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a th:href="@{/admin}"><span class="glyphicon glyphicon-home"></span> Hem</a></li>
+            <li><a th:href="@{/admin/station}"><span class="glyphicon glyphicon-list"></span> Stationer</a></li>
+            <li><a th:href="@{/admin/sensor}"><span class="glyphicon glyphicon-list"></span> Sensorer</a></li>
+        </ul>
+    </div>
+</html>
