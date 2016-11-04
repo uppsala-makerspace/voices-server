@@ -2,9 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/head :: mainHead('Administration')"/>
     <body>
-    <div th:replace="fragments/navigation :: standard"/>
-    <h1>
-        Hej, världen
-    </h1>
+        <div th:replace="fragments/navigation :: standard"/>
+        <div class="col-xs-12">
+            <h1>
+                Hej och välkommen
+            </h1>
+            <p>Detta är det bakomliggande systemet för IoT-projektet. Här går det att administrera stationer och sensorer.</p>
+            <p>Här sköts även användarhanteringen och underhållsuppgifter.</p>
+        </div>
     </body>
 </html>
