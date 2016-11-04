@@ -19,4 +19,13 @@ The admin interface (Work In Progress) may be reached using the following URL:
 
     http://<server>:<port>/admin
     
+Viewing the embedded database tables
+------------------------------------
+
+Unless changed in the configuration, the IoT server starts with a H2 database.  
+To view the database tables, go to
+
+    http://<server>:<port>/h2-console
     
+Change the JDBC URL to `jdbc:h2:file:./voices-server` if it doesn't say so already,  
+and hit Connect to begin.
