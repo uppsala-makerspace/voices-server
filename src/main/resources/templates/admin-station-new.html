@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/head :: mainHead('Lägg till ny station')"/>
+    <body>
+        <div th:replace="fragments/navigation :: standard"/>
+        <div class="col-xs-12">
+            <h1>
+                Lägg till ny station
+            </h1>
+            <p>Fyll i uppgifterna för den nya stationen nedan</p>
+            <form th:action="@{/admin/station}" method="post">
+                <div class="form-group">
+                    <label class="col-sm-2" for="name">Namn</label>
+                    <input class="col-sm-2" id="name" type="text" name="name"/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span>Spara</button>
+                </div>
+            </form>
+
+        </div>
+    </body>
+</html>

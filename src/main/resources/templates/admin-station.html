@@ -7,7 +7,20 @@
             <h1>
                 Stationer
             </h1>
-            <p>Här kommer funktioner för att administrera stationer ligga.</p>
+            <p>Här är en lista över samtliga registrerade stationer. Stationer identifierar sig för servern genom headern <span>X-Station-ID: &lt;id&gt;</span></p>
+            <p style="color: #a0a0a; font-style: italic" th:if="${stations.isEmpty()}">Det finns inga stationer. Lägg till en nedan.</p>
+            <table class="table table-striped" th:if="${!stations.isEmpty()}">
+                <thead>
+                    <tr><th>ID</th><th>Namn</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="station : ${stations}">
+                    <td class="col-xs-2"><a th:text="${station.uuid}" th:href="@{/admin/station/{uuid}(uuid=${station.uuid})}"></a></td>
+                    <td class="col-xs-2"><span th:text="${station.name}"></span></td>
+                </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-primary" th:href="@{/admin/station/new}"><span class="glyphicon glyphicon-plus"></span> Lägg till...</a>
         </div>
     </body>
 </html>
