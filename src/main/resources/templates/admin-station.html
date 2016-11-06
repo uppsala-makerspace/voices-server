@@ -11,12 +11,13 @@
             <p style="color: #a0a0a; font-style: italic" th:if="${stations.isEmpty()}">Det finns inga stationer. Lägg till en nedan.</p>
             <table class="table table-striped" th:if="${!stations.isEmpty()}">
                 <thead>
-                    <tr><th>ID</th><th>Namn</th></tr>
+                    <tr><th>ID</th><th>Namn</th><th>Ägare</th></tr>
                 </thead>
                 <tbody>
                 <tr th:each="station : ${stations}">
-                    <td class="col-xs-2"><a th:text="${station.uuid}" th:href="@{/admin/station/{uuid}(uuid=${station.uuid})}"></a></td>
+                    <td style="font-family: monospace;" class="col-xs-2"><a th:text="${station.uuid}" th:href="@{/admin/station/{uuid}(uuid=${station.uuid})}"></a></td>
                     <td class="col-xs-2"><span th:text="${station.name}"></span></td>
+                    <td class="col-xs-2"><span th:text="${station.owner.userName}"></span></td>
                 </tr>
                 </tbody>
             </table>
