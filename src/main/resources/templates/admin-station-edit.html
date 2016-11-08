@@ -5,10 +5,13 @@
         <div th:replace="fragments/navigation :: standard"/>
         <div class="col-xs-12">
             <h1>
-                Lägg till ny station
+                Station
             </h1>
-            <p>Fyll i uppgifterna för den nya stationen nedan</p>
             <form class="form-horizontal" th:action="@{/admin/station}" method="post">
+                <div class="form-group">
+                    <label class="col-sm-2" for="id-title">ID</label>
+                    <span class="col-sm-4" id="id-title" th:text="${station.uuid}"></span>
+                </div>
                 <div class="form-group">
                     <label class="col-sm-2" for="name">Namn</label>
                     <input class="col-sm-2" id="name" type="text" name="name"/>
