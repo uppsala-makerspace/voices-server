@@ -29,7 +29,7 @@ public class StationUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Station station = stationRepo.findOne(username);
         if(station == null) {
-            throw new UsernameNotFoundException("Station med ID " + username + " finns inte");
+            throw new UsernameNotFoundException("StationController med ID " + username + " finns inte");
         }
         return new UserDetails() {
             @Override

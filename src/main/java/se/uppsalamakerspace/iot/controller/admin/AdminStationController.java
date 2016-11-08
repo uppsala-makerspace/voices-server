@@ -1,13 +1,12 @@
 package se.uppsalamakerspace.iot.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import se.uppsalamakerspace.iot.model.Station;
 import se.uppsalamakerspace.iot.model.User;
 import se.uppsalamakerspace.iot.repository.StationRepository;
@@ -25,6 +24,13 @@ public class AdminStationController {
     private final StationRepository stationRepo;
     private final UserRepository userRepo;
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public static class StationNotFoundException extends RuntimeException {
+        public StationNotFoundException(String s) {
+            super(s);
+        }
+    }
+
     @Autowired
     public AdminStationController(StationRepository stationRepo, UserRepository userRepo) {
         this.stationRepo = stationRepo;
@@ -35,6 +41,16 @@ public class AdminStationController {
     public String stationPage(Model model) {
         model.addAttribute("stations", stationRepo.findAll());
         return "admin-station";
+    }
+
+    @GetMapping("/admin/station/{id}")
+    public String editStationPage(@PathVariable("id") String id, Model model) {
+        Station station = stationRepo.findOne(id);
+        if(station == null) {
+            throw new StationNotFoundException("Ingen station med ID " + id + " hittades");
+        }
+        model.addAttribute("station", station);
+        return "admin-station-edit";
     }
 
     @GetMapping("/admin/station/new")
