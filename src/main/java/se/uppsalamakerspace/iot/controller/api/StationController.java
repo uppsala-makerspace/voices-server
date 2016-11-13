@@ -3,6 +3,7 @@ package se.uppsalamakerspace.iot.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.Optional;
  * Created by fredl2 on 2016-11-08.
  */
 
+@CrossOrigin
 @RestController
 public class StationController {
 

@@ -1,5 +1,7 @@
 package se.uppsalamakerspace.iot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -22,9 +24,13 @@ public class VoiceMessage {
     @Column(name = "timestamp")
     private Date timestamp;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "station_id")
     private Station station;
+
+    @Column(name = "number_playbacks")
+    private Long numberPlaybacks;
 
     public String getUuid() {
         return uuid;
@@ -56,5 +62,13 @@ public class VoiceMessage {
 
     public void setStation(Station station) {
         this.station = station;
+    }
+
+    public Long getNumberPlaybacks() {
+        return numberPlaybacks;
+    }
+
+    public void setNumberPlaybacks(Long numberPlaybacks) {
+        this.numberPlaybacks = numberPlaybacks;
     }
 }

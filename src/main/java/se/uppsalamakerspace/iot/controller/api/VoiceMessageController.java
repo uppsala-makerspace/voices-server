@@ -27,6 +27,7 @@ public class VoiceMessageController {
         this.stationRepo = stationRepo;
     }
 
+    @CrossOrigin
     @PostMapping("/api/v1/message")
     public void postMessage(Authentication auth, @RequestBody VoiceMessage message) {
         if(message.getUuid() == null) {
@@ -38,6 +39,7 @@ public class VoiceMessageController {
         if(message.getStation() == null && authIsStation(auth)) {
             message.setStation(stationRepo.findOne(auth.getName()));
         }
+        message.setNumberPlaybacks(0L);
         messageRepo.save(message);
     }
 
