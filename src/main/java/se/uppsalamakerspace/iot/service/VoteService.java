@@ -1,5 +1,6 @@
 package se.uppsalamakerspace.iot.service;
 
+import org.springframework.stereotype.Service;
 import se.uppsalamakerspace.iot.model.Station;
 import se.uppsalamakerspace.iot.model.VoiceMessage;
 import se.uppsalamakerspace.iot.model.Vote;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Created by fredl2 on 2016-11-15.
  */
+@Service
 public class VoteService {
 
     private final VoteRepository voteRepo;
