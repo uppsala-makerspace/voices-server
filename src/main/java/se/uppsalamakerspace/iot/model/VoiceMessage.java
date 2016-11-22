@@ -32,6 +32,19 @@ public class VoiceMessage {
     @Column(name = "number_playbacks")
     private Long numberPlaybacks;
 
+    @Transient
+    private String base64Data;
+
+    @Transient
+    public void setBase64Data(String base64Data) {
+        this.base64Data = base64Data;
+    }
+
+    @Transient
+    public String getBase64Data() {
+        return base64Data;
+    }
+
     public String getUuid() {
         return uuid;
     }

@@ -7,6 +7,7 @@ import se.uppsalamakerspace.iot.model.Station;
 import se.uppsalamakerspace.iot.model.VoiceMessage;
 import se.uppsalamakerspace.iot.repository.VoiceMessageRepository;
 
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,15 +23,18 @@ import java.util.stream.Collectors;
 public class PlaylistService {
 
     private final VoiceMessageRepository messageRepo;
+    private final DataStorageService storageService;
 
     @Autowired
-    public PlaylistService(VoiceMessageRepository messageRepo) {
+    public PlaylistService(VoiceMessageRepository messageRepo, DataStorageService storageService) {
         this.messageRepo = messageRepo;
+        this.storageService = storageService;
     }
 
     public List<PlaylistItem> getPlaylistForStation(Station station, long numberOfMessages) {
         final AtomicInteger queueCounter = new AtomicInteger(0);
         return messageRepo.findAll().stream() //FIXME: naive approach, fetches all messages in db
+                .map(this::applyAudio)
                 .map(this::scoreMessage)
                 .sorted(compareMessageByWeight)
                 .map(VoiceMessageWeightWrapper::getMessage)
@@ -102,5 +106,11 @@ public class PlaylistService {
         public VoiceMessage getMessage() {
             return voiceMessage;
         }
+    }
+
+    private VoiceMessage applyAudio(final VoiceMessage voiceMessage) {
+        byte[] voiceBytes = storageService.retrieveBytes("voice-" + voiceMessage.getUuid());
+        voiceMessage.setBase64Data(Base64.getEncoder().encodeToString(voiceBytes));
+        return voiceMessage;
     }
 }

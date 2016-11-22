@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import se.uppsalamakerspace.iot.model.VoiceMessage;
 import se.uppsalamakerspace.iot.repository.StationRepository;
 import se.uppsalamakerspace.iot.repository.VoiceMessageRepository;
+import se.uppsalamakerspace.iot.service.DataStorageService;
 
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -20,11 +22,13 @@ public class VoiceMessageController {
 
     private final VoiceMessageRepository messageRepo;
     private final StationRepository stationRepo;
+    private final DataStorageService storageService;
 
     @Autowired
-    public VoiceMessageController(VoiceMessageRepository messageRepo, StationRepository stationRepo) {
+    public VoiceMessageController(VoiceMessageRepository messageRepo, StationRepository stationRepo, DataStorageService storageService) {
         this.messageRepo = messageRepo;
         this.stationRepo = stationRepo;
+        this.storageService = storageService;
     }
 
     @CrossOrigin
@@ -40,6 +44,9 @@ public class VoiceMessageController {
             message.setStation(stationRepo.findOne(auth.getName()));
         }
         message.setNumberPlaybacks(0L);
+
+        byte[] bytes = Base64.getDecoder().decode(message.getBase64Data());
+        storageService.storeBytes("voice-" + message.getUuid(), bytes);
         messageRepo.save(message);
     }
 
