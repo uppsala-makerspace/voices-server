@@ -1,6 +1,7 @@
 package se.uppsalamakerspace.iot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import se.uppsalamakerspace.iot.model.PlaylistItem;
 import se.uppsalamakerspace.iot.model.Station;
@@ -11,6 +12,7 @@ import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -23,11 +25,13 @@ import java.util.stream.Collectors;
 public class PlaylistService {
 
     private final VoiceMessageRepository messageRepo;
+    private final VoteService voteService;
     private final DataStorageService storageService;
 
     @Autowired
-    public PlaylistService(VoiceMessageRepository messageRepo, DataStorageService storageService) {
+    public PlaylistService(VoiceMessageRepository messageRepo, VoteService voteService, DataStorageService storageService) {
         this.messageRepo = messageRepo;
+        this.voteService = voteService;
         this.storageService = storageService;
     }
 
@@ -35,6 +39,7 @@ public class PlaylistService {
         final AtomicInteger queueCounter = new AtomicInteger(0);
         return messageRepo.findAll().stream() //FIXME: naive approach, fetches all messages in db
                 .map(this::applyAudio)
+                .map(this::applyVotes)
                 .map(this::scoreMessage)
                 .sorted(compareMessageByWeight)
                 .map(VoiceMessageWeightWrapper::getMessage)
@@ -112,5 +117,17 @@ public class PlaylistService {
         byte[] voiceBytes = storageService.retrieveBytes("voice-" + voiceMessage.getUuid());
         voiceMessage.setBase64Data(Base64.getEncoder().encodeToString(voiceBytes));
         return voiceMessage;
+    }
+
+    private VoiceMessage applyVotes(final VoiceMessage message) {
+        message.setVoteScore(sumVotesForMessage(message.getUuid()));
+        return message;
+    }
+
+    @Cacheable("vote")
+    private Long sumVotesForMessage(final String messageUuid) {
+        return voteService.getVotesForMessage(messageUuid).stream()
+                .mapToLong(v -> v.getIsUpvote() ? 1 : -1)
+                .sum();
     }
 }

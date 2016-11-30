@@ -1,6 +1,7 @@
 package se.uppsalamakerspace.iot.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
@@ -53,4 +54,5 @@ public class VoiceMessageController {
     private boolean authIsStation(Authentication auth) {
         return auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_STATION"));
     }
+
 }

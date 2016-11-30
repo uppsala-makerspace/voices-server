@@ -33,6 +33,10 @@ public class VoteService {
                 .collect(Collectors.toList()));
     }
 
+    public List<Vote> getVotesForMessage(final String messageUuid) {
+        return voteRepo.findAllByVoiceMessageUuid(messageUuid);
+    }
+
     private Vote convertVoteMessageToVote(VoteMessage voteMessage) {
         Vote vote = new Vote();
         vote.setUuid(UUID.randomUUID().toString());

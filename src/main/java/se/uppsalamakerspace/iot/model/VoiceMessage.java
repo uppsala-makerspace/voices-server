@@ -36,6 +36,9 @@ public class VoiceMessage {
     private String base64Data;
 
     @Transient
+    private Long voteScore;
+
+    @Transient
     public void setBase64Data(String base64Data) {
         this.base64Data = base64Data;
     }
@@ -43,6 +46,16 @@ public class VoiceMessage {
     @Transient
     public String getBase64Data() {
         return base64Data;
+    }
+
+    @Transient
+    public Long getVoteScore() {
+        return voteScore;
+    }
+
+    @Transient
+    public void setVoteScore(Long voteScore) {
+        this.voteScore = voteScore;
     }
 
     public String getUuid() {
