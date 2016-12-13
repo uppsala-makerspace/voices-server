@@ -45,6 +45,7 @@ public class VoiceMessageController {
             message.setStation(stationRepo.findOne(auth.getName()));
         }
         message.setNumberPlaybacks(0L);
+        message.setQueueName("citizen");
 
         byte[] bytes = Base64.getDecoder().decode(message.getBase64Data());
         storageService.storeBytes("voice-" + message.getUuid(), bytes);

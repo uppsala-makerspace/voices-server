@@ -11,6 +11,8 @@ spring:
   datasource:
     url: 'jdbc:h2:file:./voices-server;FILE_LOCK=FS'
 
+files.path: '/opt/voices'
+
 logging.level:
   se.uppsalamakerspace.iot: DEBUG
   org.springframework.security: DEBUG

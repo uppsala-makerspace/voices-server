@@ -32,6 +32,9 @@ public class VoiceMessage {
     @Column(name = "number_playbacks")
     private Long numberPlaybacks;
 
+    @Column(name = "queue_name")
+    private String queueName;
+
     @Transient
     private String base64Data;
 
@@ -96,5 +99,13 @@ public class VoiceMessage {
 
     public void setNumberPlaybacks(Long numberPlaybacks) {
         this.numberPlaybacks = numberPlaybacks;
+    }
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
     }
 }

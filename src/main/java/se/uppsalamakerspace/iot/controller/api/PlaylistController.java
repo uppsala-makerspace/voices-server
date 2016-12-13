@@ -30,8 +30,9 @@ public class PlaylistController {
 
     @Transactional
     @GetMapping("/api/v1/playlist")
-    public List<PlaylistItem> generatePlaylist(Authentication auth, @RequestParam("amount") long amount) {
-        List<PlaylistItem> items = playlistService.getPlaylistForStation(stationService.getStationByAuth(auth).orElseThrow(() -> stationNotFound(auth)), amount);
+    public List<PlaylistItem> generatePlaylist(Authentication auth, @RequestParam("amount") long amount,
+                                               @RequestParam(name="queue",required=false) String queueName) {
+        List<PlaylistItem> items = playlistService.getPlaylistForStation(stationService.getStationByAuth(auth).orElseThrow(() -> stationNotFound(auth)), amount, queueName);
         items.forEach(item -> {
             playlistService.incrementMessagePlayback(item.getMessage());
         });

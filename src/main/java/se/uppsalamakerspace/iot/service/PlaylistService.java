@@ -7,6 +7,7 @@ import se.uppsalamakerspace.iot.model.PlaylistItem;
 import se.uppsalamakerspace.iot.model.Station;
 import se.uppsalamakerspace.iot.model.VoiceMessage;
 import se.uppsalamakerspace.iot.repository.VoiceMessageRepository;
+import se.uppsalamakerspace.iot.service.exception.QueueException;
 
 import java.util.Base64;
 import java.util.Comparator;
@@ -26,24 +27,27 @@ public class PlaylistService {
 
     private final VoiceMessageRepository messageRepo;
     private final VoteService voteService;
-    private final DataStorageService storageService;
+    //private final DataStorageService storageService;
+    private final List<SoundDataSource> soundDataSources;
+
 
     @Autowired
-    public PlaylistService(VoiceMessageRepository messageRepo, VoteService voteService, DataStorageService storageService) {
+    public PlaylistService(VoiceMessageRepository messageRepo, VoteService voteService, List<SoundDataSource> soundDataSources) {
         this.messageRepo = messageRepo;
         this.voteService = voteService;
-        this.storageService = storageService;
+        this.soundDataSources = soundDataSources;
     }
 
-    public List<PlaylistItem> getPlaylistForStation(Station station, long numberOfMessages) {
+    public List<PlaylistItem> getPlaylistForStation(Station station, long numberOfMessages, String queueName) {
         final AtomicInteger queueCounter = new AtomicInteger(0);
         return messageRepo.findAll().stream() //FIXME: naive approach, fetches all messages in db
-                .map(this::applyAudio)
                 .map(this::applyVotes)
                 .map(this::scoreMessage)
                 .sorted(compareMessageByWeight)
                 .map(VoiceMessageWeightWrapper::getMessage)
+                .filter(msg -> filterByQueueName(msg, queueName))
                 .limit(numberOfMessages)
+                .map(this::applyAudio)
                 .map(msg -> makePlaylistItem(msg, queueCounter))
                 .collect(Collectors.toList());
     }
@@ -114,7 +118,7 @@ public class PlaylistService {
     }
 
     private VoiceMessage applyAudio(final VoiceMessage voiceMessage) {
-        byte[] voiceBytes = storageService.retrieveBytes("voice-" + voiceMessage.getUuid());
+        byte[] voiceBytes = soundDataSourceByQueueName(voiceMessage.getQueueName()).getAudioForMessage(voiceMessage.getUuid());
         voiceMessage.setBase64Data(Base64.getEncoder().encodeToString(voiceBytes));
         return voiceMessage;
     }
@@ -129,5 +133,16 @@ public class PlaylistService {
         return voteService.getVotesForMessage(messageUuid).stream()
                 .mapToLong(v -> v.getIsUpvote() ? 1 : -1)
                 .sum();
+    }
+
+    private SoundDataSource soundDataSourceByQueueName(final String queueName) {
+        return soundDataSources.stream()
+                .filter(source -> source.getQueueName() != null && source.getQueueName().equals(queueName))
+                .findFirst()
+                .orElseThrow(() -> new QueueException("No sound data source exists for queue " + queueName));
+    }
+
+    private boolean filterByQueueName(final VoiceMessage message, final String queueName) {
+        return queueName == null || message.getQueueName().equals(queueName);
     }
 }
